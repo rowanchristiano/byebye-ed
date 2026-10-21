@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Quicksand', 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #F6F3EC;
+  color: #2D2926;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for soothing aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 160, 145, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 160, 145, 0.4);
+}
+
+/* Animations for Mimi & Home Screen */
+@keyframes gentleBreathe {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.02, 1.015);
+  }
+}
+
+@keyframes speechFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes wardrobeFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-3deg);
+  }
+}
+
+@keyframes leafSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes starShine {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.15) rotate(12deg);
+  }
+}
+
+@keyframes petalDrift1 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(120px, 140px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes petalDrift2 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-90px, 160px) rotate(-140deg);
+    opacity: 0;
+  }
+}
+
+.animate-gentle-breathe {
+  animation: gentleBreathe 3.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-speech-float {
+  animation: speechFloat 3.2s ease-in-out infinite;
+}
+
+.animate-wardrobe-float {
+  animation: wardrobeFloat 2.8s ease-in-out infinite;
+}
+
+.animate-leaf-sway {
+  animation: leafSway 2.5s ease-in-out infinite;
+}
+
+.animate-star-shine {
+  animation: starShine 2s ease-in-out infinite;
+}
+
+.petal-1 {
+  animation: petalDrift1 7s linear infinite;
+}
+
+.petal-2 {
+  animation: petalDrift2 8.5s linear infinite 2s;
+}
+
+.petal-3 {
+  animation: petalDrift1 9s linear infinite 4s;
+}
