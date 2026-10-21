@@ -470,6 +470,93 @@ export function addChatMessage(message) {
 }
 
 /**
+ * Mark a learning module as complete and award progress stars
+ * @param {string} moduleId
+ * @returns {AppState} Updated state
+ */
+export function completeLearningModule(moduleId) {
+  const current = getState();
+  const currentLearning = current.learningProgress || { completedModuleIds: [], bookmarkedModuleIds: [] };
+  const completed = new Set(currentLearning.completedModuleIds || []);
+  const wasAlreadyCompleted = completed.has(moduleId);
+  completed.add(moduleId);
+
+  const currentProgress = current.progress || {
+    totalMealsLogged: 0,
+    healthyDays: 0,
+    streakDays: 0,
+    unlockedAchievements: []
+  };
+
+  const achievements = new Set(currentProgress.unlockedAchievements || []);
+  achievements.add('learning_star');
+  achievements.add(`module_${moduleId}`);
+
+  // Award progress stars: increment healthyDays and register stars
+  const updatedProgress = {
+    ...currentProgress,
+    healthyDays: (currentProgress.healthyDays || 0) + (wasAlreadyCompleted ? 0 : 1),
+    unlockedAchievements: Array.from(achievements)
+  };
+
+  const updated = {
+    ...current,
+    learningProgress: {
+      ...currentLearning,
+      completedModuleIds: Array.from(completed)
+    },
+    progress: updatedProgress
+  };
+
+  saveState(updated);
+  return updated;
+}
+
+/**
+ * Toggle bookmark state for a learning module
+ * @param {string} moduleId
+ * @returns {AppState} Updated state
+ */
+export function toggleBookmarkModule(moduleId) {
+  const current = getState();
+  const currentLearning = current.learningProgress || { completedModuleIds: [], bookmarkedModuleIds: [] };
+  const bookmarked = new Set(currentLearning.bookmarkedModuleIds || []);
+
+  if (bookmarked.has(moduleId)) {
+    bookmarked.delete(moduleId);
+  } else {
+    bookmarked.add(moduleId);
+  }
+
+  const updated = {
+    ...current,
+    learningProgress: {
+      ...currentLearning,
+      bookmarkedModuleIds: Array.from(bookmarked)
+    }
+  };
+
+  saveState(updated);
+  return updated;
+}
+
+/**
+ * Delete a journal entry by ID
+ * @param {string} entryId
+ * @returns {AppState} Updated state
+ */
+export function deleteJournalEntry(entryId) {
+  const current = getState();
+  const filtered = (current.journalEntries || []).filter((e) => e.id !== entryId);
+  const updated = {
+    ...current,
+    journalEntries: filtered
+  };
+  saveState(updated);
+  return updated;
+}
+
+/**
  * Update progress object manually
  * @param {Partial<Progress>} progressData
  * @returns {AppState} Updated state

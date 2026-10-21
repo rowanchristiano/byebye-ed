@@ -22,7 +22,7 @@ export function BottomNav({ activeTab = 'home', onTabChange, isHomeOverlay = fal
       icon: Heart,
     },
     {
-      id: 'log-meal',
+      id: 'learn',
       label: 'Guides',
       icon: BookOpen,
     },

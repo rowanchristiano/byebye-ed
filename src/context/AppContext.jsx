@@ -54,6 +54,24 @@ export function AppProvider({ children }) {
     return updated;
   }, []);
 
+  const handleDeleteJournalEntry = useCallback((entryId) => {
+    const updated = storage.deleteJournalEntry(entryId);
+    setState(updated);
+    return updated;
+  }, []);
+
+  const handleCompleteLearningModule = useCallback((moduleId) => {
+    const updated = storage.completeLearningModule(moduleId);
+    setState(updated);
+    return updated;
+  }, []);
+
+  const handleToggleBookmarkModule = useCallback((moduleId) => {
+    const updated = storage.toggleBookmarkModule(moduleId);
+    setState(updated);
+    return updated;
+  }, []);
+
   const handleUpdateCompanion = useCallback((companionData) => {
     const updated = storage.updateCompanion(companionData);
     setState(updated);
@@ -106,6 +124,9 @@ export function AppProvider({ children }) {
     updateProfile: handleUpdateProfile,
     addMealLog: handleAddMealLog,
     addJournalEntry: handleAddJournalEntry,
+    deleteJournalEntry: handleDeleteJournalEntry,
+    completeLearningModule: handleCompleteLearningModule,
+    toggleBookmarkModule: handleToggleBookmarkModule,
     updateCompanion: handleUpdateCompanion,
     toggleOutfit: handleToggleOutfit,
     recordActiveDay: handleRecordActiveDay,
@@ -117,6 +138,9 @@ export function AppProvider({ children }) {
     handleUpdateProfile,
     handleAddMealLog,
     handleAddJournalEntry,
+    handleDeleteJournalEntry,
+    handleCompleteLearningModule,
+    handleToggleBookmarkModule,
     handleUpdateCompanion,
     handleToggleOutfit,
     handleRecordActiveDay,
