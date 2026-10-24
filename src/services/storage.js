@@ -91,9 +91,10 @@ export const STORAGE_KEY = 'mimi_app_state';
 
 export const INITIAL_STATE = {
   userProfile: {
-    name: "Jane",
+    name: "",
     email: "mimi@gmail.com",
-    isOnboarded: true,
+    isOnboarded: false,
+    hasCompletedTutorial: false,
     supportAreas: [
       "Managing guilt around food",
       "Feeling more comfortable with my body",
@@ -143,6 +144,7 @@ export const INITIAL_STATE = {
   },
   community: {
     joinedGroups: ["grp_anonymous_support", "grp_progress_buddies"],
+    viewedPostIds: ["post_1", "post_2", "post_3"],
     forumPosts: [
       {
         id: "post_1",
@@ -345,6 +347,7 @@ export function addMealLog(log) {
     timestamp: log.timestamp || new Date().toISOString(),
     mealType: log.mealType || 'Meal',
     photoData: log.photoData || '',
+    foodDescription: log.foodDescription || log.mealName || '',
     nutritionBreakdown: log.nutritionBreakdown || {
       proteinGrams: 0,
       carbsGrams: 0,
@@ -568,6 +571,27 @@ export function updateProgress(progressData) {
     progress: {
       ...current.progress,
       ...progressData
+    }
+  };
+  saveState(updated);
+  return updated;
+}
+
+/**
+ * Record viewed community post IDs for progressive unlock of accessories
+ * @param {string[]} postIds
+ * @returns {AppState} Updated state
+ */
+export function recordViewedCommunityPosts(postIds) {
+  const current = getState();
+  const existing = new Set((current.community && current.community.viewedPostIds) || []);
+  (postIds || []).forEach((id) => existing.add(id));
+
+  const updated = {
+    ...current,
+    community: {
+      ...current.community,
+      viewedPostIds: Array.from(existing)
     }
   };
   saveState(updated);

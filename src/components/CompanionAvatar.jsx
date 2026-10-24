@@ -1,13 +1,24 @@
 import React from 'react';
 import dogImg from '../assets/dog.png';
 import catImg from '../assets/cat.png';
+import elephantImg from '../assets/elephant.png';
+import hippoImg from '../assets/hippo.png';
 import dogBandanaImg from '../assets/dog_bandana.png';
+import {
+  CapSvg,
+  BowtieSvg,
+  GlassesSvg,
+  CapeSvg,
+  CapeFrontClaspSvg,
+  WitchHatSvg,
+  CrownSvg,
+} from './AccessorySvgs';
 
 /**
  * Exquisite Handcrafted Flower Crown SVG
  * Features rich layered blush peonies, daisies with golden centers, forget-me-nots, and sage foliage
  */
-const FlowerCrownSvg = ({ className = 'w-full' }) => (
+export const FlowerCrownSvg = ({ className = 'w-full' }) => (
   <svg viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     {/* Base vine arch */}
     <path d="M18 52 C55 22, 145 22, 182 52" stroke="#4A6B53" strokeWidth="4" strokeLinecap="round" />
@@ -102,51 +113,103 @@ const FlowerCrownSvg = ({ className = 'w-full' }) => (
 
 /**
  * CompanionAvatar renders the chosen pet companion (Dog, Cat, Elephant, Hippo).
- * - For 'dog' (Mimi): Renders high-res dog.png with modular bandana, flower crown, or natural.
- * - For 'cat' (Lulu): Renders high-res cat.png with modular bandana, flower crown, or natural.
- * - For 'elephant', 'hippo': Renders responsive SVG companion illustrations with outfits.
+ * Features:
+ * - High-res hand-drawn anime/chibi character art:
+ *   - Dog (Mimi)
+ *   - Cat (Lulu)
+ *   - Elephant (Ellie) - refined to match Mimi & Lulu art style
+ *   - Hippo (bubbles) - refined to match Mimi & Lulu art style
+ * - Full modular accessory support tailored to each companion:
+ *   - 'green_bandana', 'flower_crown', 'cap', 'bowtie', 'glasses', 'cape', 'witch_hat', 'crown', 'default'
  */
 export function CompanionAvatar({
   type = 'dog',
-  outfit = 'green_bandana',
+  outfit = 'default',
   className = 'w-24 h-24',
   animated = false,
 }) {
   const normType = (type || 'dog').toLowerCase();
   const animClass = animated ? 'animate-bounce' : 'animate-gentle-breathe';
 
-  // DOG COMPANION (Mimi)
+  // 1. DOG COMPANION (Mimi)
   if (normType === 'dog') {
     return (
       <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
-        {/* Soft ground shadow beneath paws */}
         <div className="absolute bottom-1 w-3/4 h-3 bg-stone-900/15 rounded-full blur-[2px] -z-10" />
 
         <div className={`relative w-full h-full flex items-center justify-center ${animClass}`}>
-          {/* Inner container locking aspect ratio so overlays scale perfectly at any size */}
           <div className="relative h-full aspect-[1124/1337] flex items-center justify-center">
+            {/* Cape (Behind Dog) */}
+            {outfit === 'cape' && (
+              <div className="absolute top-[36%] left-[50%] -translate-x-1/2 w-[98%] pointer-events-none drop-shadow-md z-0 animate-in zoom-in-95 duration-200">
+                <CapeSvg className="w-full" />
+              </div>
+            )}
+
             {/* Natural Dog */}
             <img
               src={dogImg}
               alt="Mimi companion dog"
-              className="w-full h-full object-contain filter drop-shadow-sm select-none pointer-events-none"
+              className="w-full h-full object-contain filter drop-shadow-sm select-none pointer-events-none relative z-10"
               draggable={false}
             />
 
-            {/* Modular Bandana Overlay - Tucked naturally right under the chin curve */}
+            {/* Cape Front Brooch Clasp */}
+            {outfit === 'cape' && (
+              <div className="absolute top-[53%] left-[50%] -translate-x-1/2 w-[24%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <CapeFrontClaspSvg className="w-full drop-shadow-xs" />
+              </div>
+            )}
+
+            {/* Green Bandana */}
             {outfit === 'green_bandana' && (
               <img
                 src={dogBandanaImg}
                 alt="Green bandana"
-                className="absolute top-[54.2%] left-[21.8%] w-[53%] object-contain pointer-events-none drop-shadow-xs select-none animate-in zoom-in-95 duration-200"
+                className="absolute top-[54.2%] left-[21.8%] w-[53%] object-contain pointer-events-none drop-shadow-xs select-none z-20 animate-in zoom-in-95 duration-200"
                 draggable={false}
               />
             )}
 
-            {/* Modular Flower Crown Overlay - Perched gracefully atop the head between ears */}
+            {/* Flower Crown */}
             {outfit === 'flower_crown' && (
-              <div className="absolute top-[4.5%] left-[50%] -translate-x-1/2 w-[48%] pointer-events-none drop-shadow-sm animate-in zoom-in-95 duration-200">
+              <div className="absolute top-[4.5%] left-[50%] -translate-x-1/2 w-[48%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
                 <FlowerCrownSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Baseball Cap */}
+            {outfit === 'cap' && (
+              <div className="absolute top-[6%] left-[51%] -translate-x-1/2 -rotate-3 w-[52%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <CapSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Bowtie */}
+            {outfit === 'bowtie' && (
+              <div className="absolute top-[52.5%] left-[50%] -translate-x-1/2 w-[28%] pointer-events-none drop-shadow-xs z-20 animate-in zoom-in-95 duration-200">
+                <BowtieSvg className="w-full drop-shadow-xs" />
+              </div>
+            )}
+
+            {/* Harry Potter Round Glasses */}
+            {outfit === 'glasses' && (
+              <div className="absolute top-[25.2%] left-[57.6%] -translate-x-1/2 -rotate-3 w-[53.5%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <GlassesSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Witch Hat */}
+            {outfit === 'witch_hat' && (
+              <div className="absolute -top-[14%] left-[52%] -translate-x-1/2 -rotate-3 w-[56%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+                <WitchHatSvg className="w-full drop-shadow-md" />
+              </div>
+            )}
+
+            {/* Golden Crown */}
+            {outfit === 'crown' && (
+              <div className="absolute top-[1%] left-[51%] -translate-x-1/2 w-[38%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+                <CrownSvg className="w-full drop-shadow-md" />
               </div>
             )}
           </div>
@@ -155,38 +218,85 @@ export function CompanionAvatar({
     );
   }
 
-  // CAT COMPANION (Lulu)
+  // 2. CAT COMPANION (Lulu)
   if (normType === 'cat') {
     return (
       <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
-        {/* Soft ground shadow beneath paws */}
         <div className="absolute bottom-1 w-3/4 h-3 bg-stone-900/15 rounded-full blur-[2px] -z-10" />
 
         <div className={`relative w-full h-full flex items-center justify-center ${animClass}`}>
-          {/* Inner container locking aspect ratio so overlays scale perfectly at any size */}
           <div className="relative h-full aspect-[1414/1362] flex items-center justify-center">
+            {/* Cape (Behind Cat) */}
+            {outfit === 'cape' && (
+              <div className="absolute top-[32%] left-[60%] -translate-x-1/2 w-[96%] pointer-events-none drop-shadow-md z-0 animate-in zoom-in-95 duration-200">
+                <CapeSvg className="w-full" />
+              </div>
+            )}
+
             {/* Natural White Fluffy Cat */}
             <img
               src={catImg}
               alt="Cat companion"
-              className="w-full h-full object-contain filter drop-shadow-sm select-none pointer-events-none"
+              className="w-full h-full object-contain filter drop-shadow-sm select-none pointer-events-none relative z-10"
               draggable={false}
             />
 
-            {/* Modular Bandana Overlay fitted to Cat's neck fold */}
+            {/* Cape Front Brooch Clasp */}
+            {outfit === 'cape' && (
+              <div className="absolute top-[44%] left-[67%] -translate-x-1/2 -rotate-3 w-[22%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <CapeFrontClaspSvg className="w-full drop-shadow-xs" />
+              </div>
+            )}
+
+            {/* Green Bandana */}
             {outfit === 'green_bandana' && (
               <img
                 src={dogBandanaImg}
                 alt="Green bandana"
-                className="absolute top-[43.7%] left-[55.8%] w-[33%] -rotate-6 object-contain pointer-events-none drop-shadow-xs select-none animate-in zoom-in-95 duration-200"
+                className="absolute top-[43.7%] left-[55.8%] w-[33%] -rotate-6 object-contain pointer-events-none drop-shadow-xs select-none z-20 animate-in zoom-in-95 duration-200"
                 draggable={false}
               />
             )}
 
-            {/* Modular Flower Crown Overlay fitted atop Cat's crown between ears */}
+            {/* Flower Crown */}
             {outfit === 'flower_crown' && (
-              <div className="absolute top-[6.5%] left-[67%] -translate-x-1/2 -rotate-3 w-[36%] pointer-events-none drop-shadow-sm animate-in zoom-in-95 duration-200">
+              <div className="absolute top-[6.5%] left-[67%] -translate-x-1/2 -rotate-3 w-[36%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
                 <FlowerCrownSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Baseball Cap */}
+            {outfit === 'cap' && (
+              <div className="absolute top-[8%] left-[68%] -translate-x-1/2 -rotate-4 w-[42%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <CapSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Bowtie */}
+            {outfit === 'bowtie' && (
+              <div className="absolute top-[44.5%] left-[67%] -translate-x-1/2 -rotate-2 w-[25%] pointer-events-none drop-shadow-xs z-20 animate-in zoom-in-95 duration-200">
+                <BowtieSvg className="w-full drop-shadow-xs" />
+              </div>
+            )}
+
+            {/* Round Glasses */}
+            {outfit === 'glasses' && (
+              <div className="absolute top-[22.5%] left-[74.4%] -translate-x-1/2 -rotate-4 w-[39.5%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <GlassesSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Witch Hat */}
+            {outfit === 'witch_hat' && (
+              <div className="absolute -top-[12%] left-[67%] -translate-x-1/2 -rotate-3 w-[48%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+                <WitchHatSvg className="w-full drop-shadow-md" />
+              </div>
+            )}
+
+            {/* Golden Crown */}
+            {outfit === 'crown' && (
+              <div className="absolute top-[2%] left-[67%] -translate-x-1/2 -rotate-3 w-[32%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+                <CrownSvg className="w-full drop-shadow-md" />
               </div>
             )}
           </div>
@@ -195,109 +305,175 @@ export function CompanionAvatar({
     );
   }
 
-  // OTHER COMPANIONS (Elephant, Hippo)
+  // 3. ELEPHANT COMPANION (Ellie) - Handcrafted anime/chibi art style matching Mimi & Lulu
+  if (normType === 'elephant') {
+    return (
+      <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
+        <div className="absolute bottom-1 w-3/4 h-3 bg-stone-900/15 rounded-full blur-[2px] -z-10" />
+
+        <div className={`relative w-full h-full flex items-center justify-center ${animClass}`}>
+          <div className="relative h-full aspect-[1/1] flex items-center justify-center">
+            {/* Cape (Behind Elephant) */}
+            {outfit === 'cape' && (
+              <div className="absolute top-[36%] left-[50%] -translate-x-1/2 w-[104%] pointer-events-none drop-shadow-md z-0 animate-in zoom-in-95 duration-200">
+                <CapeSvg className="w-full" />
+              </div>
+            )}
+
+            {/* Ellie Elephant Image */}
+            <img
+              src={elephantImg}
+              alt="Ellie elephant companion"
+              className="w-full h-full object-contain filter drop-shadow-sm select-none pointer-events-none relative z-10"
+              draggable={false}
+            />
+
+            {/* Cape Front Brooch Clasp */}
+            {outfit === 'cape' && (
+              <div className="absolute top-[56.5%] left-[50%] -translate-x-1/2 w-[23%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <CapeFrontClaspSvg className="w-full drop-shadow-xs" />
+              </div>
+            )}
+
+            {/* Green Bandana */}
+            {outfit === 'green_bandana' && (
+              <img
+                src={dogBandanaImg}
+                alt="Green bandana"
+                className="absolute top-[50%] left-[34%] w-[38%] -rotate-3 object-contain pointer-events-none drop-shadow-xs select-none z-20 animate-in zoom-in-95 duration-200"
+                draggable={false}
+              />
+            )}
+
+            {/* Flower Crown */}
+            {outfit === 'flower_crown' && (
+              <div className="absolute top-[6.5%] left-[50%] -translate-x-1/2 w-[46%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <FlowerCrownSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Baseball Cap */}
+            {outfit === 'cap' && (
+              <div className="absolute top-[8.5%] left-[50%] -translate-x-1/2 -rotate-2 w-[48%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <CapSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Bowtie */}
+            {outfit === 'bowtie' && (
+              <div className="absolute top-[57.5%] left-[50%] -translate-x-1/2 w-[26%] pointer-events-none drop-shadow-xs z-20 animate-in zoom-in-95 duration-200">
+                <BowtieSvg className="w-full drop-shadow-xs" />
+              </div>
+            )}
+
+            {/* Round Glasses */}
+            {outfit === 'glasses' && (
+              <div className="absolute top-[25.2%] left-[56.6%] -translate-x-1/2 -rotate-4 w-[49%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+                <GlassesSvg className="w-full drop-shadow-sm" />
+              </div>
+            )}
+
+            {/* Witch Hat */}
+            {outfit === 'witch_hat' && (
+              <div className="absolute -top-[12%] left-[50%] -translate-x-1/2 -rotate-3 w-[54%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+                <WitchHatSvg className="w-full drop-shadow-md" />
+              </div>
+            )}
+
+            {/* Golden Crown */}
+            {outfit === 'crown' && (
+              <div className="absolute top-[2.5%] left-[50%] -translate-x-1/2 w-[36%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+                <CrownSvg className="w-full drop-shadow-md" />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 4. HIPPO COMPANION (bubbles) - Handcrafted anime/chibi art style matching Mimi, Lulu & Ellie
   return (
     <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
-      <svg
-        viewBox="0 0 160 160"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={`w-full h-full drop-shadow-sm transition-transform duration-300 ${animClass}`}
-      >
-        <ellipse cx="80" cy="148" rx="45" ry="8" fill="#EAD9CE" fillOpacity="0.5" />
+      <div className="absolute bottom-1 w-3/4 h-3 bg-stone-900/15 rounded-full blur-[2px] -z-10" />
 
-        {/* ELEPHANT COMPANION */}
-        {normType === 'elephant' && (
-          <g id="elephant-body">
-            <ellipse cx="36" cy="76" rx="26" ry="30" fill="#B5C9DF" stroke="#3A4D60" strokeWidth="3" />
-            <ellipse cx="36" cy="76" rx="17" ry="20" fill="#D6E4F0" />
-            <ellipse cx="124" cy="76" rx="26" ry="30" fill="#B5C9DF" stroke="#3A4D60" strokeWidth="3" />
-            <ellipse cx="124" cy="76" rx="17" ry="20" fill="#D6E4F0" />
-            <ellipse cx="80" cy="118" rx="44" ry="30" fill="#B5C9DF" stroke="#3A4D60" strokeWidth="3" />
-            <ellipse cx="80" cy="122" rx="26" ry="18" fill="#E4EEF8" />
-            <circle cx="80" cy="80" r="40" fill="#B5C9DF" stroke="#3A4D60" strokeWidth="3" />
-            <circle cx="56" cy="86" r="6" fill="#F8B4BE" opacity="0.8" />
-            <circle cx="104" cy="86" r="6" fill="#F8B4BE" opacity="0.8" />
-            <ellipse cx="65" cy="75" rx="4" ry="5" fill="#253545" />
-            <circle cx="64" cy="73" r="1.5" fill="#FFFFFF" />
-            <ellipse cx="95" cy="75" rx="4" ry="5" fill="#253545" />
-            <circle cx="94" cy="73" r="1.5" fill="#FFFFFF" />
-            <path d="M74 84C74 100 70 108 78 110C86 112 88 98 86 84" fill="#B5C9DF" stroke="#3A4D60" strokeWidth="3" strokeLinejoin="round" />
-            <ellipse cx="64" cy="143" rx="12" ry="7" fill="#E4EEF8" stroke="#3A4D60" strokeWidth="2.5" />
-            <ellipse cx="96" cy="143" rx="12" ry="7" fill="#E4EEF8" stroke="#3A4D60" strokeWidth="2.5" />
+      <div className={`relative w-full h-full flex items-center justify-center ${animClass}`}>
+        <div className="relative h-full aspect-[1/1] flex items-center justify-center">
+          {/* Cape (Behind Hippo) */}
+          {outfit === 'cape' && (
+            <div className="absolute top-[36%] left-[51%] -translate-x-1/2 w-[100%] pointer-events-none drop-shadow-md z-0 animate-in zoom-in-95 duration-200">
+              <CapeSvg className="w-full" />
+            </div>
+          )}
 
-            {/* Elephant Bandana */}
-            {outfit === 'green_bandana' && (
-              <path
-                d="M56 100 C68 114, 92 114, 104 100 C96 118, 86 128, 80 132 C74 128, 64 118, 56 100 Z"
-                fill="#7DAE8B"
-                stroke="#3D6B4F"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-              />
-            )}
+          {/* Bubbles Hippo Image */}
+          <img
+            src={hippoImg}
+            alt="Bubbles hippo companion"
+            className="w-full h-full object-contain filter drop-shadow-sm select-none pointer-events-none relative z-10"
+            draggable={false}
+          />
 
-            {/* Elephant Flower Crown */}
-            {outfit === 'flower_crown' && (
-              <g>
-                <path d="M52 50 C68 40, 92 40, 108 50" stroke="#7DAE8B" strokeWidth="3" fill="none" strokeLinecap="round" />
-                <circle cx="62" cy="45" r="5" fill="#FFC5CE" />
-                <circle cx="62" cy="45" r="2.5" fill="#FFE885" />
-                <circle cx="80" cy="40" r="6" fill="#FFAAA6" />
-                <circle cx="80" cy="40" r="3" fill="#FFF0A0" />
-                <circle cx="98" cy="45" r="5" fill="#BCE0FD" />
-                <circle cx="98" cy="45" r="2.5" fill="#FFE885" />
-              </g>
-            )}
-          </g>
-        )}
+          {/* Cape Front Brooch Clasp */}
+          {outfit === 'cape' && (
+            <div className="absolute top-[57%] left-[51%] -translate-x-1/2 w-[24%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+              <CapeFrontClaspSvg className="w-full drop-shadow-xs" />
+            </div>
+          )}
 
-        {/* HIPPO COMPANION */}
-        {normType === 'hippo' && (
-          <g id="hippo-body">
-            <ellipse cx="50" cy="50" rx="12" ry="10" fill="#9BA6BD" stroke="#3D4556" strokeWidth="3" />
-            <ellipse cx="110" cy="50" rx="12" ry="10" fill="#9BA6BD" stroke="#3D4556" strokeWidth="3" />
-            <ellipse cx="80" cy="120" rx="44" ry="28" fill="#9BA6BD" stroke="#3D4556" strokeWidth="3" />
-            <ellipse cx="80" cy="124" rx="26" ry="16" fill="#D3DAE8" />
-            <circle cx="80" cy="74" r="34" fill="#9BA6BD" stroke="#3D4556" strokeWidth="3" />
-            <ellipse cx="80" cy="94" rx="42" ry="26" fill="#9BA6BD" stroke="#3D4556" strokeWidth="3" />
-            <circle cx="50" cy="98" r="6" fill="#F8B4BE" opacity="0.8" />
-            <circle cx="110" cy="98" r="6" fill="#F8B4BE" opacity="0.8" />
-            <ellipse cx="66" cy="68" rx="4" ry="5" fill="#20242E" />
-            <circle cx="65" cy="66" r="1.5" fill="#FFFFFF" />
-            <ellipse cx="94" cy="68" rx="4" ry="5" fill="#20242E" />
-            <circle cx="93" cy="66" r="1.5" fill="#FFFFFF" />
-            <ellipse cx="72" cy="88" rx="3" ry="2.5" fill="#20242E" />
-            <ellipse cx="88" cy="88" rx="3" ry="2.5" fill="#20242E" />
-            <ellipse cx="64" cy="144" rx="12" ry="6" fill="#D3DAE8" stroke="#3D4556" strokeWidth="2.5" />
-            <ellipse cx="96" cy="144" rx="12" ry="6" fill="#D3DAE8" stroke="#3D4556" strokeWidth="2.5" />
+          {/* Green Bandana */}
+          {outfit === 'green_bandana' && (
+            <img
+              src={dogBandanaImg}
+              alt="Green bandana"
+              className="absolute top-[50%] left-[36%] w-[40%] -rotate-3 object-contain pointer-events-none drop-shadow-xs select-none z-20 animate-in zoom-in-95 duration-200"
+              draggable={false}
+            />
+          )}
 
-            {/* Hippo Bandana */}
-            {outfit === 'green_bandana' && (
-              <path
-                d="M54 104 C68 116, 92 116, 106 104 C98 122, 88 130, 80 134 C72 130, 62 122, 54 104 Z"
-                fill="#7DAE8B"
-                stroke="#3D6B4F"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-              />
-            )}
+          {/* Flower Crown */}
+          {outfit === 'flower_crown' && (
+            <div className="absolute top-[7%] left-[51%] -translate-x-1/2 w-[44%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+              <FlowerCrownSvg className="w-full drop-shadow-sm" />
+            </div>
+          )}
 
-            {/* Hippo Flower Crown */}
-            {outfit === 'flower_crown' && (
-              <g>
-                <path d="M52 46 C68 36, 92 36, 108 46" stroke="#7DAE8B" strokeWidth="3" fill="none" strokeLinecap="round" />
-                <circle cx="62" cy="41" r="5" fill="#FFC5CE" />
-                <circle cx="62" cy="41" r="2.5" fill="#FFE885" />
-                <circle cx="80" cy="36" r="6" fill="#FFAAA6" />
-                <circle cx="80" cy="36" r="3" fill="#FFF0A0" />
-                <circle cx="98" cy="41" r="5" fill="#BCE0FD" />
-                <circle cx="98" cy="41" r="2.5" fill="#FFE885" />
-              </g>
-            )}
-          </g>
-        )}
-      </svg>
+          {/* Baseball Cap */}
+          {outfit === 'cap' && (
+            <div className="absolute top-[9%] left-[51%] -translate-x-1/2 -rotate-2 w-[48%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+              <CapSvg className="w-full drop-shadow-sm" />
+            </div>
+          )}
+
+          {/* Bowtie */}
+          {outfit === 'bowtie' && (
+            <div className="absolute top-[57%] left-[51%] -translate-x-1/2 w-[26%] pointer-events-none drop-shadow-xs z-20 animate-in zoom-in-95 duration-200">
+              <BowtieSvg className="w-full drop-shadow-xs" />
+            </div>
+          )}
+
+          {/* Round Glasses */}
+          {outfit === 'glasses' && (
+            <div className="absolute top-[16.5%] left-[53.2%] -translate-x-1/2 -rotate-6 w-[56%] pointer-events-none drop-shadow-sm z-20 animate-in zoom-in-95 duration-200">
+              <GlassesSvg className="w-full drop-shadow-sm" />
+            </div>
+          )}
+
+          {/* Witch Hat */}
+          {outfit === 'witch_hat' && (
+            <div className="absolute -top-[10%] left-[51%] -translate-x-1/2 -rotate-3 w-[52%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+              <WitchHatSvg className="w-full drop-shadow-md" />
+            </div>
+          )}
+
+          {/* Golden Crown */}
+          {outfit === 'crown' && (
+            <div className="absolute top-[3%] left-[51%] -translate-x-1/2 w-[34%] pointer-events-none drop-shadow-md z-20 animate-in zoom-in-95 duration-200">
+              <CrownSvg className="w-full drop-shadow-md" />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

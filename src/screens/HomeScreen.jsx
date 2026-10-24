@@ -184,10 +184,13 @@ export function HomeScreen({ onNavigate, onOpenProfile, onOpenChat }) {
                 Companion
               </div>
               <button
+                type="button"
                 onClick={() => {
+                  const defaultNames = ['Mimi', 'Lulu', 'Ellie', 'Pip', 'bubbles', 'Bubbles', 'Ele'];
+                  const isDefault = !companion?.name || defaultNames.includes(companion.name);
                   updateCompanion({
                     type: 'dog',
-                    name: companion?.name === 'Lulu' ? 'Mimi' : (companion?.name || 'Mimi'),
+                    name: isDefault ? 'Mimi' : companion.name,
                   });
                   setWardrobeMenuOpen(false);
                 }}
@@ -201,10 +204,13 @@ export function HomeScreen({ onNavigate, onOpenProfile, onOpenChat }) {
                 {(companion?.type || 'dog') === 'dog' && <span>✓</span>}
               </button>
               <button
+                type="button"
                 onClick={() => {
+                  const defaultNames = ['Mimi', 'Lulu', 'Ellie', 'Pip', 'bubbles', 'Bubbles', 'Ele'];
+                  const isDefault = !companion?.name || defaultNames.includes(companion.name);
                   updateCompanion({
                     type: 'cat',
-                    name: companion?.name === 'Mimi' ? 'Lulu' : (companion?.name || 'Lulu'),
+                    name: isDefault ? 'Lulu' : companion.name,
                   });
                   setWardrobeMenuOpen(false);
                 }}
@@ -216,6 +222,59 @@ export function HomeScreen({ onNavigate, onOpenProfile, onOpenChat }) {
               >
                 <span>🐱 Cat (Lulu)</span>
                 {companion?.type === 'cat' && <span>✓</span>}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const defaultNames = ['Mimi', 'Lulu', 'Ellie', 'Pip', 'bubbles', 'Bubbles', 'Ele'];
+                  const isDefault = !companion?.name || defaultNames.includes(companion.name);
+                  updateCompanion({
+                    type: 'elephant',
+                    name: isDefault ? 'Ellie' : companion.name,
+                  });
+                  setWardrobeMenuOpen(false);
+                }}
+                className={`px-2.5 py-1.5 rounded-xl text-left cursor-pointer transition-colors flex items-center justify-between ${
+                  companion?.type === 'elephant'
+                    ? 'bg-amber-50 text-amber-900 font-bold'
+                    : 'hover:bg-stone-50'
+                }`}
+              >
+                <span>🐘 Elephant (Ellie)</span>
+                {companion?.type === 'elephant' && <span>✓</span>}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const defaultNames = ['Mimi', 'Lulu', 'Ellie', 'Pip', 'bubbles', 'Bubbles', 'Ele'];
+                  const isDefault = !companion?.name || defaultNames.includes(companion.name);
+                  updateCompanion({
+                    type: 'hippo',
+                    name: isDefault ? 'bubbles' : companion.name,
+                  });
+                  setWardrobeMenuOpen(false);
+                }}
+                className={`px-2.5 py-1.5 rounded-xl text-left cursor-pointer transition-colors flex items-center justify-between ${
+                  companion?.type === 'hippo'
+                    ? 'bg-amber-50 text-amber-900 font-bold'
+                    : 'hover:bg-stone-50'
+                }`}
+              >
+                <span>🦛 Hippo (bubbles)</span>
+                {companion?.type === 'hippo' && <span>✓</span>}
+              </button>
+
+              <div className="h-px bg-stone-100 my-0.5" />
+              <button
+                type="button"
+                onClick={() => {
+                  setWardrobeMenuOpen(false);
+                  onNavigate('progress');
+                }}
+                className="px-2.5 py-1.5 rounded-xl text-left cursor-pointer transition-colors bg-purple-50 text-purple-900 hover:bg-purple-100 font-bold flex items-center justify-between text-[10px]"
+              >
+                <span>✨ All Accessories</span>
+                <span>→</span>
               </button>
             </div>
           )}

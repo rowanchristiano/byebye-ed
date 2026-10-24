@@ -108,6 +108,12 @@ export function AppProvider({ children }) {
     return reset;
   }, []);
 
+  const handleRecordViewedCommunityPosts = useCallback((postIds) => {
+    const updated = storage.recordViewedCommunityPosts(postIds);
+    setState(updated);
+    return updated;
+  }, []);
+
   const value = useMemo(() => ({
     // Global state slices
     state,
@@ -132,6 +138,7 @@ export function AppProvider({ children }) {
     recordActiveDay: handleRecordActiveDay,
     addChatMessage: handleAddChatMessage,
     updateProgress: handleUpdateProgress,
+    recordViewedCommunityPosts: handleRecordViewedCommunityPosts,
     resetToDefaultState: handleResetToDefaultState,
   }), [
     state,

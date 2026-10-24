@@ -22,7 +22,9 @@ export function getApiKey() {
   if (localKey && localKey.trim()) {
     return localKey.trim();
   }
-  return (import.meta.env.VITE_GEMINI_API_KEY || '').trim();
+  const envKey = (import.meta.env.VITE_GEMINI_API_KEY || '').trim();
+  if (envKey) return envKey;
+  return 'AIzaSyBxZKL1RbpBzTm9gr51wVHCVxnGNhEX8Ao';
 }
 
 /**

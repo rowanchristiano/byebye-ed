@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Check, ChevronRight, ChevronLeft, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import CompanionAvatar from './CompanionAvatar';
@@ -12,30 +12,37 @@ const SUPPORT_OPTIONS = [
   'Feeling less alone',
 ];
 
+const COMPANION_DEFAULTS = {
+  dog: 'Mimi',
+  cat: 'Lulu',
+  elephant: 'Ellie',
+  hippo: 'bubbles',
+};
+
 const COMPANIONS = [
   {
     type: 'cat',
-    label: 'Cat',
+    label: 'Cat (Lulu)',
     description: 'Whimsical & peaceful',
     outfit: 'flower_crown',
   },
   {
     type: 'dog',
-    label: 'Dog',
+    label: 'Dog (Mimi)',
     description: 'Loyal & encouraging',
     outfit: 'green_bandana',
   },
   {
     type: 'elephant',
-    label: 'Elephant',
+    label: 'Elephant (Ellie)',
     description: 'Gentle & steady',
-    outfit: 'default',
+    outfit: 'cap',
   },
   {
     type: 'hippo',
-    label: 'Hippo',
+    label: 'Hippo (bubbles)',
     description: 'Warm & grounded',
-    outfit: 'default',
+    outfit: 'bowtie',
   },
 ];
 
@@ -46,7 +53,7 @@ const DEFAULT_MEAL_TIMES = [
   { key: 'snack', label: 'Supper/Snack (optional)', defaultTime: '09:00 PM', optional: true },
 ];
 
-export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
+export function OnboardingModal({ isOpen: explicitIsOpen, onClose, onComplete }) {
   const { userProfile, companion, updateProfile, updateCompanion } = useApp();
 
   // Automatic trigger if not onboarded, or controlled via explicitIsOpen
@@ -55,7 +62,14 @@ export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
   const [step, setStep] = useState(1);
 
   // Form State initialized from userProfile/companion
-  const [userName, setUserName] = useState(() => userProfile?.name || 'Jane');
+  const [userName, setUserName] = useState(() => userProfile?.name || '');
+
+  useEffect(() => {
+    if (userProfile?.name && !userName) {
+      setUserName(userProfile.name);
+    }
+  }, [userProfile?.name]);
+
   const [selectedAreas, setSelectedAreas] = useState(() =>
     userProfile?.supportAreas?.length
       ? userProfile.supportAreas
@@ -109,7 +123,7 @@ export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
   const handleSave = () => {
     // 1. Update Profile
     updateProfile({
-      name: userName.trim() || 'Jane',
+      name: userName.trim() || userProfile?.name || 'Jane',
       isOnboarded: true,
       supportAreas: selectedAreas,
       mealRemindersEnabled: reminderPref !== 'Not right now',
@@ -117,13 +131,18 @@ export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
     });
 
     // 2. Update Companion
+    const defaultPetName = COMPANION_DEFAULTS[selectedPet] || 'Mimi';
     updateCompanion({
       type: selectedPet,
-      name: petName.trim() || 'Mimi',
-      equippedOutfit: selectedPet === 'dog' ? 'green_bandana' : 'default',
+      name: petName.trim() || defaultPetName,
+      equippedOutfit: selectedPet === 'dog' ? 'green_bandana' : (selectedPet === 'cat' ? 'flower_crown' : 'default'),
     });
 
-    if (onClose) onClose();
+    if (onComplete) {
+      onComplete();
+    } else if (onClose) {
+      onClose();
+    }
   };
 
   return (
@@ -175,7 +194,7 @@ export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
               {/* Kind Affirmation Subtitle from design */}
               <div className="p-4 rounded-2xl bg-[#F7F2E7]/80 border border-[#EBE3D3] text-center">
                 <p className="text-xs leading-relaxed text-[#6E5D52] font-medium">
-                  “You don’t have to change your body to deserve care. This is your space to explore
+                  {userName.trim() ? `“Welcome, ${userName.trim()}! ` : '“'}You don’t have to change your body to deserve care. This is your space to explore
                   your feelings and take things one step at a time.”
                 </p>
               </div>
@@ -289,7 +308,13 @@ export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
                     <button
                       type="button"
                       key={item.type}
-                      onClick={() => setSelectedPet(item.type)}
+                      onClick={() => {
+                        setSelectedPet(item.type);
+                        const defaultNames = ['Mimi', 'Lulu', 'Ellie', 'Pip', 'bubbles', 'Bubbles', 'Ele'];
+                        if (!petName || defaultNames.includes(petName)) {
+                          setPetName(COMPANION_DEFAULTS[item.type]);
+                        }
+                      }}
                       className={`relative flex flex-col items-center text-center p-3.5 rounded-2xl border transition-all cursor-pointer ${
                         isSelected
                           ? 'bg-[#EBF5EF] border-[#7DAE8B] shadow-md ring-2 ring-[#7DAE8B]/20 scale-[1.02]'
@@ -324,7 +349,7 @@ export function OnboardingModal({ isOpen: explicitIsOpen, onClose }) {
                     type="text"
                     value={petName}
                     onChange={(e) => setPetName(e.target.value)}
-                    placeholder="Mimi"
+                    placeholder={COMPANION_DEFAULTS[selectedPet] || 'Mimi'}
                     className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#E5DCce] focus:outline-none focus:border-[#7DAE8B] focus:ring-2 focus:ring-[#7DAE8B]/20 text-sm font-semibold transition-all"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#8A7A70]">
